@@ -1,0 +1,30 @@
+rules:
+  - name: "Error Detection"
+    pattern: "ERROR|FAILURE|failed|exception"
+    tag: "error"
+    priority: "high"
+  
+  - name: "Warning Detection"
+    pattern: "WARN|warning"
+    tag: "warning"
+    priority: "medium"
+  
+  - name: "Build Issues"
+    pattern: "(Build failed|FAILURE:|What went wrong)"
+    tag: "build_failure"
+    priority: "high"
+  
+  - name: "Gradle Issues"
+    pattern: "(gradle|daemon|build)"
+    tag: "gradle"
+    priority: "medium"
+  
+  - name: "Compilation"
+    pattern: "compilation|Running gradle"
+    tag: "compilation"
+    priority: "medium"
+  
+  - name: "Download Progress"
+    pattern: "Downloading|\\d+%"
+    tag: "download"
+    priority: "low"

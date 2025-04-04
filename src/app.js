@@ -8,7 +8,6 @@ const { LogParser } = require('./services/LogParser');
 const { Aggregator } = require('./services/Aggregator');
 
 const app = express();
-const port = process.env.PORT || 8080;
 
 // Middleware
 app.use(cors());
@@ -145,6 +144,13 @@ app.post('/api/analyze', async (req, res) => {
 });
 
 // Start server
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+// Export for Vercel
+module.exports = app;
+
+// Start server if running directly
+if (require.main === module) {
+    const port = process.env.PORT || 8080;
+    app.listen(port, () => {
+        console.log(`Server running at http://localhost:${port}`);
+    });
+}

@@ -75,6 +75,36 @@ rules:
 npm test
 ```
 
+## Deployment to Vercel
+
+1. Install the Vercel CLI:
+   ```bash
+   npm install -g vercel
+   ```
+
+2. Login to Vercel:
+   ```bash
+   vercel login
+   ```
+
+3. Deploy to Vercel:
+   ```bash
+   vercel
+   ```
+
+4. For production deployment:
+   ```bash
+   vercel --prod
+   ```
+
+Alternatively, you can deploy directly from the Vercel dashboard:
+
+1. Push your code to GitHub
+2. Go to [Vercel Dashboard](https://vercel.com/dashboard)
+3. Click "New Project"
+4. Import your GitHub repository
+5. Click "Deploy"
+
 ## License
 
 ISC

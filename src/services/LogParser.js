@@ -8,29 +8,18 @@ class LogParser extends EventEmitter {
         this.rules = rules;
     }
 
-    async parseFile(filePath) {
-        console.log('Starting to parse file:', filePath);
+    async parseBuffer(buffer) {
+        console.log('Starting to parse buffer');
         let lineCount = 0;
         let matchCount = 0;
         let errorCount = 0;
         
         try {
-            console.log('Creating read stream...');
-            const fileStream = fs.createReadStream(filePath);
+            // Convert buffer to string and split into lines
+            const lines = buffer.toString().split(/\r?\n/);
             
-            fileStream.on('error', (error) => {
-                console.error('File stream error:', error);
-                throw error;
-            });
-
-            console.log('Creating readline interface...');
-            const rl = readline.createInterface({
-                input: fileStream,
-                crlfDelay: Infinity
-            });
-
-            console.log('Starting to read lines...');
-            for await (const line of rl) {
+            console.log('Starting to process lines...');
+            for (const line of lines) {
                 lineCount++;
                 try {
                     if (line.trim()) { // Skip empty lines
@@ -46,7 +35,7 @@ class LogParser extends EventEmitter {
             console.log(`Processed ${lineCount} lines, found ${matchCount} matches, encountered ${errorCount} errors`);
             return { lineCount, matchCount, errorCount };
         } catch (error) {
-            console.error('Error in parseFile:', error);
+            console.error('Error in parseBuffer:', error);
             throw error;
         }
     }

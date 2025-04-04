@@ -68,21 +68,7 @@ app.post('/api/analyze', async (req, res) => {
             return res.status(400).json({ error: 'File size must be less than 50MB' });
         }
 
-        const uploadPath = path.join(__dirname, '../uploads', 'temp.log');
-        console.log('Upload path:', uploadPath);
-
-        // Ensure uploads directory exists
-        const uploadsDir = path.dirname(uploadPath);
-        if (!fs.existsSync(uploadsDir)) {
-            console.log('Creating uploads directory:', uploadsDir);
-            fs.mkdirSync(uploadsDir, { recursive: true });
-        }
-
         try {
-            // Save uploaded file
-            await logFile.mv(uploadPath);
-            console.log('File saved successfully');
-
             // Initialize parser and aggregator
             const rules = loadRules();
             console.log('Loaded rules:', rules);
@@ -102,18 +88,14 @@ app.post('/api/analyze', async (req, res) => {
                 console.error('Parser error:', error);
             });
 
-            // Process log file
+            // Process log file buffer
             console.log('Starting to parse file');
-            const parseResult = await parser.parseFile(uploadPath);
+            const parseResult = await parser.parseBuffer(logFile.data);
             console.log('Parse result:', parseResult);
 
             // Get analysis results
             const results = aggregator.getResults();
             console.log('Analysis results:', results);
-
-            // Clean up
-            fs.unlinkSync(uploadPath);
-            console.log('Cleaned up temporary file');
 
             if (matchCount === 0) {
                 console.log('No matches found in file');
